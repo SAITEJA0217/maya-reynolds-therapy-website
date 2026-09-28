@@ -140,7 +140,7 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
   }
 
   const field = (name: FieldName) =>
-    `mt-2 block w-full min-h-12 rounded-[3px] border bg-field px-4 py-3 text-base text-ink transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+    `mt-2 block w-full min-h-12 rounded-[3px] border bg-field px-4 py-3 text-base text-ink transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-accent ${
       errors[name] ? "border-error" : "border-field-line focus:border-ink"
     }`;
   const label = "text-[0.9375rem] font-medium text-ink";
@@ -226,7 +226,7 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
         <select
           id={fieldId("format")}
           name="format"
-          className="mt-2 block min-h-12 w-full cursor-pointer rounded-[3px] border border-field-line bg-field px-4 py-3 text-base text-ink focus:border-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="mt-2 block min-h-12 w-full cursor-pointer rounded-[3px] border border-field-line bg-field px-4 py-3 text-base text-ink focus:border-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-accent"
           defaultValue={sessionOptions[0]}
         >
           {sessionOptions.map((option) => (
