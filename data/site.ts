@@ -112,7 +112,7 @@ export const mayaContent: SiteContent = {
 
   hero: {
     eyebrow: "In-person therapy in Santa Monica & telehealth across California",
-    heading: "Slow down, reconnect with yourself, and finally feel *steady*.",
+    heading: "Therapy in Santa Monica: a *calm* place to work through anxiety, trauma & burnout.",
     body: "Therapy for adults navigating anxiety, panic, trauma, and burnout, with practical tools and room for depth.",
     cta: { label: "Request an appointment", href: "#contact" },
     secondaryCta: { label: "Meet Dr. Reynolds", href: "#about" },

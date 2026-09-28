@@ -13,7 +13,7 @@ Before recording: open the site at full desktop width, scrolled to the top. Keep
 ### 0:30–1:15 · First impression (hero)
 
 - "Within a few seconds visitors can tell where you are, who you help and how to reach you. The line at the top says in-person in Santa Monica and telehealth across California."
-- "The headline speaks to the people you describe in your profile: capable, high-achieving adults who look fine on the outside but feel on edge. We deliberately avoided the usual 'your healing journey starts here' wording."
+- "The headline says plainly what you do and where: therapy in Santa Monica for anxiety, trauma and burnout, in a calm place to work through them. That helps the right people, and search engines, recognise you straight away, and we deliberately avoided the usual 'your healing journey starts here' wording."
 - "That's your actual office in the main photo, not a stock image. The colours on the whole site come from that room: the linen walls, the olive tree, the brick."
 - Point to **Request an appointment** and **Meet Dr. Reynolds**: "There's one clear next step, plus a softer option for people who want to learn about you first."
 
@@ -38,7 +38,7 @@ Before recording: open the site at full desktop width, scrolled to the top. Keep
 ### 3:40–4:10 · Questions and getting in touch
 
 - Open one FAQ: "These answer the questions people ask before they reach out: who you work with, what sessions feel like, in-person or telehealth, and whether you'd be a good fit. Every answer is based on your profile."
-- Contact: "The request form is short: name, email, how they'd like to meet, and what's bringing them in. It gently reminds people not to share private clinical details. Your photo sits beside it so it feels like writing to you rather than to an inbox."
+- Contact: "The request form is short: name and email, an optional phone number, how they'd like to meet, and an optional note about what's bringing them in. It checks entries as people fill it in, gently reminds them not to share private clinical details, and makes clear it isn't for emergencies, with 988 and 911 right there."
 - Footer: "Your address and specialties again, plus a 988 crisis line, which is good practice for any therapy site."
 
 ### 4:10–4:45 · Mobile
