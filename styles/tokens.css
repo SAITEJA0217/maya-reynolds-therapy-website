@@ -1,0 +1,53 @@
+/*
+ * Design tokens — Dr. Maya Reynolds, PsyD
+ *
+ * Palette is pulled from Maya's own office: warm linen walls, oak floors,
+ * olive greenery, and the exposed brick of her Santa Monica building.
+ * All text pairings below meet WCAG AA (checked at build time of the palette).
+ */
+@theme {
+  /* Surfaces */
+  --color-linen: #f5f1ea; /* BACKGROUND — page base */
+  --color-paper: #fbf9f5; /* SURFACE (raised) — cards, form fields */
+  --color-sand: #ebe3d6; /* SURFACE (alt) — alternating sections */
+
+  /* Brand */
+  --color-olive: #33402f; /* PRIMARY — buttons, headings accents (9.7:1 on linen) */
+  --color-olive-deep: #2b3628; /* PRIMARY (dark) — dark bands, footer */
+  --color-sage: #8a9a7e; /* SECONDARY — decorative rules, icons (non-text) */
+  --color-sage-light: #c9d2bd; /* SECONDARY on dark — text on olive (8:1) */
+  --color-clay: #9a5238; /* ACCENT — brick; eyebrows, emphasis (5.1:1 on linen) */
+  --color-clay-light: #d9a58c; /* ACCENT on dark (5.8:1 on olive-deep) */
+
+  /* Text */
+  --color-ink: #26241f; /* TEXT (13.8:1) */
+  --color-muted: #5f5a51; /* MUTED TEXT (6.1:1) */
+  --color-line: #d8cebf; /* BORDER */
+
+  /* Type families (populated by next/font/local in app/layout.tsx) */
+  --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale — fluid, capped so mobile headings never overwhelm */
+  --text-display: clamp(2.35rem, 1.55rem + 3.4vw, 4.6rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.02em;
+  --text-h2: clamp(1.9rem, 1.45rem + 1.9vw, 3.15rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(1.35rem, 1.2rem + 0.6vw, 1.7rem);
+  --text-h3--line-height: 1.2;
+  --text-lead: clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --text-lead--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.7;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.6;
+  --text-eyebrow: 0.78rem;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.18em;
+
+  /* Layout */
+  --container-site: 76rem;
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+}
