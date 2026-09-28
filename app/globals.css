@@ -1,19 +1,57 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
 
+/*
+ * Type scale — measured from the reference (docs/reference-spec.md).
+ * Mobile values are set independently (as the reference does); from 768px up
+ * sizes scale linearly between the tablet and 1440 measurements.
+ */
+:root {
+  --fs-h1: clamp(1.9rem, 8.4vw, 2.1rem); /* 33px @390 */
+  --fs-h2: clamp(1.65rem, 7.4vw, 1.85rem); /* 29px @390 */
+  --fs-h3: 1.375rem; /* 22px */
+  --fs-body: 0.9375rem; /* 15px mobile */
+  --fs-eyebrow: 0.875rem; /* 14px */
+  --fs-caps: 0.8125rem; /* 13px — nav, links, pills */
+  --lh-display: 1.33;
+  --lh-body: 1.8;
+  --tracking-caps: 0.12em;
+  --gutter: 6vw; /* 23px @390 */
+  --header-h: 5.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-h1: calc(15.3px + 2.83vw); /* 37 @768 → 56 @1440 */
+    --fs-h2: calc(15.8px + 2.4vw); /* 34 @768 → 50 @1440 */
+    --fs-h3: calc(21.7px + 0.3vw); /* 24 @768 → 26 @1440 */
+    --fs-body: 1rem;
+    --fs-eyebrow: 0.9375rem; /* 15px */
+    --gutter: 8.8vw;
+    --header-h: 9.6rem; /* hero content begins ~154px from top */
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --fs-body: 1.03rem; /* 16.5px */
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem; /* keeps anchored headings clear of the sticky header */
+    scroll-padding-top: 1.5rem;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: var(--color-linen);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: var(--text-body--line-height);
+    background-color: var(--c-canvas);
+    color: var(--c-body);
+    font-family: var(--f-body);
+    font-size: var(--fs-body);
+    font-weight: var(--body-weight);
+    line-height: var(--lh-body);
     text-rendering: optimizeLegibility;
   }
 
@@ -21,45 +59,86 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 400;
+    font-family: var(--f-display);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    line-height: var(--lh-display);
+    color: var(--c-ink);
     font-optical-sizing: auto;
-    text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
   }
 
-  /* Italic emphasis inside headings mirrors the reference site's script accents */
-  :where(h1, h2, h3, blockquote) em {
-    font-style: italic;
-    color: var(--color-clay);
-  }
-
-  ::selection {
-    background: var(--color-sage-light);
-    color: var(--color-ink);
+  /* The accent-word device: script in the reference, italic serif for Maya. */
+  .accent {
+    font-family: var(--f-accent);
+    font-style: var(--accent-style);
+    font-weight: var(--accent-weight);
+    font-size: var(--accent-scale);
+    color: var(--c-accent);
+    line-height: 0;
+    letter-spacing: 0;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-clay);
+    outline: 2px solid var(--c-accent);
     outline-offset: 3px;
-    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--c-tint);
+    color: var(--c-ink);
   }
 }
 
+[data-theme] {
+  font-family: var(--f-body);
+  font-weight: var(--body-weight);
+  color: var(--c-body);
+}
+
+@utility font-display-weight {
+  font-weight: var(--display-weight);
+}
+
 @layer components {
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-size: var(--text-eyebrow);
-    line-height: var(--text-eyebrow--line-height);
-    letter-spacing: var(--text-eyebrow--letter-spacing);
+  .caps {
+    font-family: var(--f-body);
+    font-size: var(--fs-caps);
+    font-weight: 400;
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
-    font-weight: 600;
+    line-height: 1.8;
   }
 
-  /* Accessible, JS-free FAQ accordion with a smooth height transition */
+  .eyebrow {
+    font-family: var(--f-body);
+    font-size: var(--fs-eyebrow);
+    font-weight: 400;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    line-height: 1.8;
+    color: var(--c-ink);
+  }
+
+  .h1 {
+    font-size: var(--fs-h1);
+  }
+  .h2 {
+    font-size: var(--fs-h2);
+  }
+  .h3 {
+    font-size: var(--fs-h3);
+    line-height: 1.3;
+  }
+
+  .gutter-x {
+    padding-inline: var(--gutter);
+  }
+
+  /* Native <details> accordion with animated height */
   .faq-item::details-content {
     block-size: 0;
     overflow: hidden;
@@ -75,13 +154,17 @@
   }
 }
 
-/* Gentle section reveal — progressive enhancement, zero JavaScript */
+html:has(.faq-item) {
+  interpolate-size: allow-keywords;
+}
+
+/* Gentle reveal — CSS scroll-driven, progressive enhancement only */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .reveal {
       animation: reveal-up linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 40%;
+      animation-range: entry 0% entry 35%;
     }
   }
 }
@@ -89,16 +172,12 @@
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: none;
   }
-}
-
-html:has(.faq-item) {
-  interpolate-size: allow-keywords;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,40 +1,28 @@
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { Hero } from "@/components/sections/Hero";
-import { Intro } from "@/components/sections/Intro";
-import { WhoIHelp } from "@/components/sections/WhoIHelp";
-import { QuoteBand } from "@/components/sections/QuoteBand";
-import { FocusAreas } from "@/components/sections/FocusAreas";
-import { About } from "@/components/sections/About";
-import { Specialties } from "@/components/sections/Specialties";
-import { Office } from "@/components/sections/Office";
-import { Faq } from "@/components/sections/Faq";
-import { Contact } from "@/components/sections/Contact";
+import { HomepageSections } from "@/components/page/HomepageSections";
+import { OfficeSection } from "@/components/sections/OfficeSection";
+import { FaqSection } from "@/components/sections/FaqSection";
+import { ContactForm } from "@/components/ui/ContactForm";
 import { StructuredData } from "@/components/layout/StructuredData";
+import { contactForm, faq, mayaContent, office } from "@/data/site";
 
 /**
- * Section order follows the reference homepage, with two additions:
- * Office (new, Part 3) and an on-page FAQ (the reference's "FAQs" nav target).
+ * Dr. Maya Reynolds' homepage: the reference architecture (HomepageSections)
+ * with her content and theme, plus the new Office section and an on-page FAQ.
  */
 export default function Home() {
   return (
     <>
       <StructuredData />
-      <div id="top" />
-      <Header />
-      <main id="main">
-        <Hero />
-        <Intro />
-        <WhoIHelp />
-        <QuoteBand />
-        <FocusAreas />
-        <About />
-        <Specialties />
-        <Office />
-        <Faq />
-        <Contact />
-      </main>
-      <Footer />
+      <HomepageSections
+        content={mayaContent}
+        additions={
+          <>
+            <OfficeSection content={office} />
+            <FaqSection content={faq} />
+          </>
+        }
+        scheduleAside={<ContactForm sessionOptions={contactForm.sessionOptions} note={contactForm.note} />}
+      />
     </>
   );
 }

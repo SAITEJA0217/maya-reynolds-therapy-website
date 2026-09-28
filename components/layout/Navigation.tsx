@@ -2,19 +2,23 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import type { NavItem } from "@/data/types";
+import { pillClass } from "@/components/ui/PillLink";
 
 type NavigationProps = {
   items: NavItem[];
 };
 
 /**
- * Mirrors the reference navigation: dropdown folders for About, Specialties
- * and Methods, then FAQs and Contact. Dropdowns open on hover (pointer) and
- * on click / Enter / Space (keyboard + touch). Escape closes everything.
+ * Reference navigation pattern:
+ * - ≥1024px: tracked-caps links, folders open a panel on hover / click / Enter,
+ *   final item rendered as the outlined ellipse "Contact" pill.
+ * - <1024px: thin three-line toggle → full-screen overlay; folders open a
+ *   sub-list with a "Back" control (Squarespace 7.1 folder behaviour).
  */
 export function Navigation({ items }: NavigationProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [folder, setFolder] = useState<NavItem | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const baseId = useId();
@@ -25,13 +29,12 @@ export function Navigation({ items }: NavigationProps) {
       setOpenMenu(null);
       if (mobileOpen) {
         setMobileOpen(false);
+        setFolder(null);
         toggleRef.current?.focus();
       }
     }
     function onPointer(event: PointerEvent) {
-      if (navRef.current && !navRef.current.contains(event.target as Node)) {
-        setOpenMenu(null);
-      }
+      if (navRef.current && !navRef.current.contains(event.target as Node)) setOpenMenu(null);
     }
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onPointer);
@@ -48,28 +51,35 @@ export function Navigation({ items }: NavigationProps) {
     };
   }, [mobileOpen]);
 
-  const lastIndex = items.length - 1;
+  function closeMobile() {
+    setMobileOpen(false);
+    setFolder(null);
+  }
+
+  const last = items.length - 1;
 
   return (
     <nav ref={navRef} aria-label="Main">
       {/* Desktop */}
-      <ul className="hidden items-center gap-1 lg:flex">
+      <ul className="hidden items-center gap-[2.3vw] lg:flex xl:gap-9">
         {items.map((item, index) => {
-          const menuId = `${baseId}-${index}`;
+          const menuId = `${baseId}-m${index}`;
           const isOpen = openMenu === item.label;
-          const isContact = index === lastIndex;
+
+          if (index === last) {
+            return (
+              <li key={item.label} className="ml-[0.4vw]">
+                <a href={item.href} className={`${pillClass} min-h-12 px-5`}>
+                  {item.label}
+                </a>
+              </li>
+            );
+          }
 
           if (!item.children) {
             return (
               <li key={item.label}>
-                <a
-                  href={item.href}
-                  className={
-                    isContact
-                      ? "ml-3 inline-flex min-h-11 items-center rounded-full bg-olive px-6 text-[0.95rem] font-medium text-paper transition-colors duration-300 hover:bg-olive-deep"
-                      : "inline-flex min-h-11 items-center px-3.5 text-[0.95rem] text-ink transition-colors hover:text-clay"
-                  }
-                >
+                <a href={item.href} className="caps inline-flex min-h-11 items-center text-ink transition-colors hover:text-accent">
                   {item.label}
                 </a>
               </li>
@@ -88,26 +98,23 @@ export function Navigation({ items }: NavigationProps) {
                 aria-expanded={isOpen}
                 aria-controls={menuId}
                 onClick={() => setOpenMenu(isOpen ? null : item.label)}
-                className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 px-3.5 text-[0.95rem] text-ink transition-colors hover:text-clay"
+                className="caps inline-flex min-h-11 cursor-pointer items-center text-ink transition-colors hover:text-accent"
               >
                 {item.label}
-                <Chevron open={isOpen} />
               </button>
               <div
                 id={menuId}
-                className={`absolute left-0 top-full pt-2 transition-all duration-300 ease-(--ease-calm) ${
-                  isOpen
-                    ? "visible translate-y-0 opacity-100"
-                    : "invisible -translate-y-1 opacity-0"
+                className={`absolute left-1/2 top-full z-40 -translate-x-1/2 pt-1 transition-[opacity,visibility] duration-300 ${
+                  isOpen ? "visible opacity-100" : "invisible opacity-0"
                 }`}
               >
-                <ul className="min-w-60 border border-line bg-paper py-2 shadow-[0_18px_40px_-24px_rgb(38_36_31/0.35)]">
+                <ul className="min-w-56 bg-canvas px-6 py-4 text-center shadow-[0_10px_30px_-18px_rgb(0_0_0/0.3)]">
                   {item.children.map((child) => (
                     <li key={child.href + child.label}>
                       <a
                         href={child.href}
                         onClick={() => setOpenMenu(null)}
-                        className="block px-5 py-2.5 text-[0.95rem] text-ink transition-colors hover:bg-sand hover:text-olive"
+                        className="block py-1.5 text-[0.9rem] text-ink transition-colors hover:text-accent"
                       >
                         {child.label}
                       </a>
@@ -120,7 +127,7 @@ export function Navigation({ items }: NavigationProps) {
         })}
       </ul>
 
-      {/* Mobile toggle */}
+      {/* Mobile toggle — three thin rules, as in the reference */}
       <button
         ref={toggleRef}
         type="button"
@@ -128,70 +135,90 @@ export function Navigation({ items }: NavigationProps) {
         aria-expanded={mobileOpen}
         aria-controls={`${baseId}-mobile`}
         aria-label={mobileOpen ? "Close menu" : "Open menu"}
-        onClick={() => setMobileOpen((open) => !open)}
+        onClick={() => (mobileOpen ? closeMobile() : setMobileOpen(true))}
       >
-        <span aria-hidden="true" className="relative block h-3.5 w-6">
+        <span aria-hidden="true" className="relative block h-3.5 w-9">
           <span
-            className={`absolute left-0 h-px w-6 bg-ink transition-transform duration-300 ${
-              mobileOpen ? "top-1.5 rotate-45" : "top-0"
-            }`}
+            className={`absolute left-0 h-px w-9 bg-ink transition-all duration-300 ${mobileOpen ? "top-1.75 rotate-45" : "top-0"}`}
           />
           <span
-            className={`absolute left-0 h-px w-6 bg-ink transition-transform duration-300 ${
-              mobileOpen ? "top-1.5 -rotate-45" : "top-3.5"
-            }`}
+            className={`absolute left-0 top-1.75 h-px w-9 bg-ink transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`}
+          />
+          <span
+            className={`absolute left-0 h-px w-9 bg-ink transition-all duration-300 ${mobileOpen ? "top-1.75 -rotate-45" : "top-3.5"}`}
           />
         </span>
       </button>
 
-      {/* Mobile panel */}
+      {/* Mobile overlay */}
       <div
         id={`${baseId}-mobile`}
-        className={`fixed inset-0 z-40 overflow-y-auto bg-linen px-5 pb-12 pt-24 transition-opacity duration-300 sm:px-8 lg:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col overflow-y-auto bg-canvas pt-28 transition-opacity duration-300 lg:hidden ${
           mobileOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <ul className="flex flex-col divide-y divide-line border-y border-line">
-          {items.map((item) => (
-            <li key={item.label} className="py-5">
-              <a
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="font-serif text-[1.75rem] leading-tight text-ink"
-              >
-                {item.label}
-              </a>
-              {item.children && (
-                <ul className="mt-3 flex flex-col">
-                  {item.children.map((child) => (
-                    <li key={child.href + child.label}>
-                      <a
-                        href={child.href}
-                        onClick={() => setMobileOpen(false)}
-                        className="block py-1.5 text-base text-muted hover:text-olive"
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
+        {folder ? (
+          <div className="flex flex-1 flex-col items-center gap-2 px-8 pb-10 text-center">
+            <button
+              type="button"
+              onClick={() => setFolder(null)}
+              className="caps mb-4 inline-flex min-h-11 items-center gap-2 text-ink"
+            >
+              <span aria-hidden="true">←</span> Back
+            </button>
+            <p className="sr-only">{folder.label}</p>
+            <ul className="flex flex-col items-center gap-1">
+              {folder.children?.map((child) => (
+                <li key={child.href + child.label}>
+                  <a
+                    href={child.href}
+                    onClick={closeMobile}
+                    className="block py-2 font-display text-[1.6rem] font-display-weight text-ink"
+                  >
+                    {child.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <ul className="flex flex-1 flex-col items-center gap-1 px-8 pb-10 text-center">
+            {items.map((item, index) =>
+              index === last ? (
+                <li key={item.label} className="mt-6">
+                  <a href={item.href} onClick={closeMobile} className={pillClass}>
+                    {item.label}
+                  </a>
+                </li>
+              ) : (
+                <li key={item.label}>
+                  {item.children ? (
+                    <button
+                      type="button"
+                      onClick={() => setFolder(item)}
+                      className="inline-flex items-center gap-2 py-2 font-display text-[1.9rem] font-display-weight text-ink"
+                    >
+                      {item.label}
+                      <span aria-hidden="true" className="text-base text-accent">
+                        →
+                      </span>
+                      <span className="sr-only">(open submenu)</span>
+                    </button>
+                  ) : (
+                    <a
+                      href={item.href}
+                      onClick={closeMobile}
+                      className="block py-2 font-display text-[1.9rem] font-display-weight text-ink"
+                    >
+                      {item.label}
+                    </a>
+                  )}
+                </li>
+              ),
+            )}
+          </ul>
+        )}
       </div>
     </nav>
-  );
-}
-
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 12 12"
-      className={`size-2.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-    >
-      <path d="M1.5 4 6 8.5 10.5 4" fill="none" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
   );
 }

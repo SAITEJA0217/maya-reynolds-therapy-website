@@ -1,6 +1,6 @@
-import { faq, practice, seo, specialties } from "@/data/site";
+import { faq, mayaContent, practice, seo } from "@/data/site";
 
-/** schema.org data built strictly from profile facts (no phone, hours, or pricing invented). */
+/** schema.org data built strictly from profile facts (no phone, hours, or pricing). */
 export function StructuredData() {
   const data = {
     "@context": "https://schema.org",
@@ -22,7 +22,7 @@ export function StructuredData() {
           { "@type": "City", name: "Santa Monica" },
           { "@type": "State", name: "California" },
         ],
-        knowsAbout: specialties.services.map((service) => service.title),
+        knowsAbout: mayaContent.specialties.items.map((item) => item.title),
       },
       {
         "@type": "FAQPage",
@@ -34,7 +34,6 @@ export function StructuredData() {
       },
     ],
   };
-
   return (
     <script
       type="application/ld+json"

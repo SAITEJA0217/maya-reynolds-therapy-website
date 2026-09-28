@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
+import { pillClass } from "./PillLink";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -43,16 +44,16 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
   }
 
   const field =
-    "mt-2 block w-full min-h-12 border border-line bg-paper px-4 py-3 text-base text-ink placeholder:text-muted/70 transition-colors focus:border-olive focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay";
-  const label = "text-small font-medium text-ink";
+    "mt-2 block w-full min-h-12 border border-line bg-field px-4 py-3 text-base text-ink placeholder:text-body/60 transition-colors focus:border-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+  const label = "text-[0.9375rem] font-medium text-ink";
 
   if (status === "sent") {
     return (
-      <div role="status" className="border border-line bg-paper p-8 lg:p-10">
-        <p className="font-serif text-h3 text-ink">Thank you — your request has been sent.</p>
-        <p className="mt-3 text-muted">Dr. Reynolds will follow up with you directly.</p>
+      <div role="status" className="border border-line bg-field p-8 lg:p-10">
+        <p className="font-display h3 text-ink">Thank you — your request has been sent.</p>
+        <p className="mt-3 text-body">Dr. Reynolds will follow up with you directly.</p>
         {!endpoint && (
-          <p className="mt-4 text-small text-muted">
+          <p className="mt-4 text-[0.9375rem] text-body">
             (Preview mode: form delivery is connected at launch.)
           </p>
         )}
@@ -61,7 +62,7 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-5 sm:grid-cols-2" noValidate={false}>
+    <form onSubmit={onSubmit} className="grid gap-5 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2">
       <div>
         <label htmlFor={`${id}-name`} className={label}>
           Name
@@ -76,11 +77,11 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
       </div>
       <div>
         <label htmlFor={`${id}-phone`} className={label}>
-          Phone <span className="font-normal text-muted">(optional)</span>
+          Phone <span className="font-normal text-body">(optional)</span>
         </label>
         <input id={`${id}-phone`} name="phone" type="tel" autoComplete="tel" className={field} />
       </div>
-      <div>
+      <div className="sm:col-span-2 md:col-span-1 xl:col-span-2">
         <label htmlFor={`${id}-format`} className={label}>
           How would you like to meet?
         </label>
@@ -90,7 +91,7 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
           ))}
         </select>
       </div>
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 md:col-span-1 xl:col-span-2">
         <label htmlFor={`${id}-message`} className={label}>
           What&apos;s bringing you to therapy?
         </label>
@@ -101,23 +102,20 @@ export function ContactForm({ sessionOptions, note }: ContactFormProps) {
           aria-describedby={`${id}-note`}
           className={`${field} resize-y`}
         />
-        <p id={`${id}-note`} className="mt-2 text-[0.85rem] text-muted">
+        <p id={`${id}-note`} className="mt-2 text-[0.85rem] text-body">
           {note}
         </p>
       </div>
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 md:col-span-1 xl:col-span-2">
         <button
           type="submit"
           disabled={status === "sending"}
-          className="group inline-flex min-h-12 cursor-pointer items-center justify-center gap-3 rounded-full bg-olive px-8 text-[0.95rem] font-medium text-paper transition-colors duration-300 hover:bg-olive-deep disabled:opacity-60"
+          className={`${pillClass} cursor-pointer px-7 disabled:opacity-60`}
         >
           {status === "sending" ? "Sending…" : "Send request"}
-          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none">
-            →
-          </span>
         </button>
         {status === "error" && (
-          <p role="alert" className="mt-4 text-small text-clay">
+          <p role="alert" className="mt-4 text-[0.9375rem] text-accent">
             Something went wrong sending your request. Please try again.
           </p>
         )}

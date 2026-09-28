@@ -19,9 +19,9 @@ Before recording: open the site at full desktop width, scrolled to the top. Keep
 
 ### 1:15–2:00 · Recognition (intro, who I help, quote)
 
-- Scroll to "From the outside, you're doing fine…": "This part is meant to make a visitor feel understood. The details (constant worry, trouble sleeping, always bracing) come straight from your own words."
+- Scroll to "You look fine from the outside…": "This part is meant to make a visitor feel understood. The details (constant worry, trouble sleeping, always bracing) come straight from your own words."
 - "Who I help" shows three kinds of client from your profile: high-achievers running on empty, adults affected by earlier experiences, and entrepreneurs, creatives and professionals. "Each one is paired with a corner of your office."
-- Quote band: "This quiet pause is your line about therapy being a place to slow down and reconnect."
+- Dark band: "This quiet pause is your line about therapy being a place to slow down and reconnect."
 
 ### 2:00–2:50 · Trust (areas of focus, about, specialties)
 
