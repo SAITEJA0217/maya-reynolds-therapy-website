@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { practice, seo } from "@/data/site";
+import { siteUrl } from "@/lib/siteUrl";
 
 /* Self-hosted variable fonts: no third-party requests, no layout shift. */
 const fraunces = localFont({
@@ -19,12 +20,6 @@ const dmSans = localFont({
   variable: "--font-dm-sans",
   display: "swap",
 });
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

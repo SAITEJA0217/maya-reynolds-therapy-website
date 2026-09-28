@@ -21,16 +21,42 @@ export function Navigation({ items }: NavigationProps) {
   const [folder, setFolder] = useState<NavItem | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const lastFolderRef = useRef<string | null>(null);
   const baseId = useId();
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
+      if (event.key === "Tab" && mobileOpen) {
+        trapFocus(event);
+        return;
+      }
       if (event.key !== "Escape") return;
-      setOpenMenu(null);
+      if (openMenu) {
+        // Return focus to the folder button that owns the open panel.
+        document.getElementById(`${baseId}-b${openMenu}`)?.focus();
+        setOpenMenu(null);
+      }
       if (mobileOpen) {
         setMobileOpen(false);
         setFolder(null);
         toggleRef.current?.focus();
+      }
+    }
+    function trapFocus(event: KeyboardEvent) {
+      // Keep keyboard focus inside the open mobile menu (toggle + overlay).
+      const focusables = [
+        toggleRef.current,
+        ...(overlayRef.current?.querySelectorAll<HTMLElement>("a[href], button") ?? []),
+      ].filter((el): el is HTMLElement => Boolean(el));
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
     function onPointer(event: PointerEvent) {
@@ -42,7 +68,23 @@ export function Navigation({ items }: NavigationProps) {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onPointer);
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, openMenu, baseId]);
+
+  // Move focus into the menu, into a sub-list, and back out again.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const frame = requestAnimationFrame(() => {
+      const overlay = overlayRef.current;
+      if (!overlay) return;
+      const target = folder
+        ? overlay.querySelector<HTMLElement>("[data-back]")
+        : lastFolderRef.current
+          ? overlay.querySelector<HTMLElement>(`[data-folder="${lastFolderRef.current}"]`)
+          : overlay.querySelector<HTMLElement>("a[href], button");
+      target?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [mobileOpen, folder]);
 
   useEffect(() => {
     document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
@@ -54,6 +96,7 @@ export function Navigation({ items }: NavigationProps) {
   function closeMobile() {
     setMobileOpen(false);
     setFolder(null);
+    lastFolderRef.current = null;
   }
 
   const last = items.length - 1;
@@ -64,7 +107,7 @@ export function Navigation({ items }: NavigationProps) {
       <ul className="hidden items-center gap-[2.3vw] lg:flex xl:gap-9">
         {items.map((item, index) => {
           const menuId = `${baseId}-m${index}`;
-          const isOpen = openMenu === item.label;
+          const isOpen = openMenu === String(index);
 
           if (index === last) {
             return (
@@ -90,22 +133,36 @@ export function Navigation({ items }: NavigationProps) {
             <li
               key={item.label}
               className="relative"
-              onMouseEnter={() => setOpenMenu(item.label)}
+              onMouseEnter={() => setOpenMenu(String(index))}
               onMouseLeave={() => setOpenMenu(null)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenMenu(null);
+              }}
             >
               <button
+                id={`${baseId}-b${index}`}
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={menuId}
-                onClick={() => setOpenMenu(isOpen ? null : item.label)}
-                className="caps inline-flex min-h-11 cursor-pointer items-center text-ink transition-colors hover:text-accent"
+                onClick={() => setOpenMenu(isOpen ? null : String(index))}
+                className="caps inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-ink transition-colors hover:text-accent"
               >
                 {item.label}
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 10 6"
+                  className={`size-2 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                >
+                  <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                </svg>
               </button>
               <div
                 id={menuId}
-                className={`absolute left-1/2 top-full z-40 -translate-x-1/2 pt-1 transition-[opacity,visibility] duration-300 ${
-                  isOpen ? "visible opacity-100" : "invisible opacity-0"
+                className={`absolute left-1/2 top-full z-40 -translate-x-1/2 pt-1 ${
+                  // Visibility flips instantly on open (so links are tabbable at once) and waits for the fade on close.
+                  isOpen
+                    ? "visible opacity-100 [transition:opacity_300ms]"
+                    : "invisible opacity-0 [transition:opacity_300ms,visibility_0s_300ms]"
                 }`}
               >
                 <ul className="min-w-56 bg-canvas px-6 py-4 text-center shadow-[0_10px_30px_-18px_rgb(0_0_0/0.3)]">
@@ -152,22 +209,28 @@ export function Navigation({ items }: NavigationProps) {
 
       {/* Mobile overlay */}
       <div
+        ref={overlayRef}
         id={`${baseId}-mobile`}
-        className={`fixed inset-0 z-40 flex flex-col overflow-y-auto bg-canvas pt-28 transition-opacity duration-300 lg:hidden ${
-          mobileOpen ? "visible opacity-100" : "invisible opacity-0"
+        className={`fixed inset-0 z-40 flex flex-col overflow-y-auto bg-canvas pt-28 lg:hidden ${
+          mobileOpen
+            ? "visible opacity-100 [transition:opacity_300ms]"
+            : "invisible opacity-0 [transition:opacity_300ms,visibility_0s_300ms]"
         }`}
       >
         {folder ? (
           <div className="flex flex-1 flex-col items-center gap-2 px-8 pb-10 text-center">
             <button
               type="button"
+              data-back
               onClick={() => setFolder(null)}
               className="caps mb-4 inline-flex min-h-11 items-center gap-2 text-ink"
             >
               <span aria-hidden="true">←</span> Back
             </button>
-            <p className="sr-only">{folder.label}</p>
-            <ul className="flex flex-col items-center gap-1">
+            <p className="caps text-accent" id={`${baseId}-folder`}>
+              {folder.label}
+            </p>
+            <ul aria-labelledby={`${baseId}-folder`} className="flex flex-col items-center gap-1">
               {folder.children?.map((child) => (
                 <li key={child.href + child.label}>
                   <a
@@ -195,7 +258,11 @@ export function Navigation({ items }: NavigationProps) {
                   {item.children ? (
                     <button
                       type="button"
-                      onClick={() => setFolder(item)}
+                      data-folder={item.label}
+                      onClick={() => {
+                        lastFolderRef.current = item.label;
+                        setFolder(item);
+                      }}
                       className="inline-flex items-center gap-2 py-2 font-display text-[1.9rem] font-display-weight text-ink"
                     >
                       {item.label}

@@ -32,8 +32,8 @@ Before recording: open the site at full desktop width, scrolled to the top. Keep
 ### 2:50–3:40 · The office (new section)
 
 - "This section is new. The site we modelled the layout on doesn't have one, but your profile mentions that clients say the room itself helps them relax, so it deserved its own place."
-- Show the gallery: "There are two views of the room and one close-up of the light coming through the curtains. The goal is for someone to picture themselves arriving before they've even booked."
-- "Underneath are the practical details: your address with a link to directions, and a note that telehealth is available for clients anywhere in California."
+- Show the spread: "The large photo is the therapy room itself; the smaller one shows the light through those tall windows. Earlier on the page you only see details; here is the whole room. The line in italics is from your profile: clients say the space itself helps them feel at ease. The goal is for someone to picture themselves arriving before they've even booked."
+- "Underneath are the practical details: your address with a link to directions, telehealth for clients located in California, and what the space is like."
 
 ### 3:40–4:10 · Questions and getting in touch
 

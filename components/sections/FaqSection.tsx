@@ -11,9 +11,9 @@ export function FaqSection({ content }: { content: FaqContent }) {
     <section
       id={content.id}
       aria-labelledby={`${content.id}-heading`}
-      className="bg-surface px-[6vw] pb-24 pt-20 md:grid md:grid-cols-[26.5vw_1fr] md:px-[8.8vw] md:pb-[8.9vw] md:pt-[8.3vw]"
+      className="bg-surface px-[6vw] pb-24 pt-20 md:grid md:grid-cols-[26.5vw_minmax(0,1fr)] md:px-[8.8vw] md:pb-[8.9vw] md:pt-[8.3vw]"
     >
-      <div>
+      <div className="md:pr-[3vw]">
         <p className="eyebrow">{content.eyebrow}</p>
         <h2 id={`${content.id}-heading`} className="mt-6 text-[calc(var(--fs-h2)*0.84)] leading-[1.25]">
           <RichText text={content.heading} />

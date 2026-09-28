@@ -114,6 +114,8 @@
   }
 
   .eyebrow {
+    display: flex;
+    gap: calc(var(--eyebrow-rule) * 0.45);
     font-family: var(--f-body);
     font-size: var(--fs-eyebrow);
     font-weight: 400;
@@ -121,6 +123,48 @@
     text-transform: uppercase;
     line-height: 1.8;
     color: var(--c-ink);
+  }
+  .eyebrow::before {
+    content: "";
+    flex: none;
+    width: var(--eyebrow-rule);
+    height: 1px;
+    margin-top: 0.9em;
+    background: var(--c-accent);
+  }
+
+  /* Themed button: Maya = solid olive; reference = outlined ellipse */
+  .btn {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-inline: 1.75rem;
+    border: 1px solid var(--btn-border);
+    border-radius: var(--btn-radius);
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    font-family: var(--f-body);
+    font-size: var(--fs-caps);
+    font-weight: var(--btn-weight);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    line-height: 1.4;
+    cursor: pointer;
+    transition:
+      background-color 0.3s var(--ease-calm),
+      color 0.3s var(--ease-calm),
+      border-color 0.3s var(--ease-calm);
+  }
+  .btn:hover {
+    background: var(--btn-hover-bg);
+    border-color: var(--btn-hover-bg);
+    color: var(--btn-hover-fg);
+  }
+  .btn:disabled {
+    cursor: progress;
+    opacity: 0.6;
   }
 
   .h1 {

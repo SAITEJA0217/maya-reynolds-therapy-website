@@ -1,6 +1,8 @@
 # Reference homepage: measured spec
 
-Source: full-page screenshots of https://www.conejovalleycounseling.com/home, captured by the site owner on 2026-09-28. This sandbox's network policy blocks the site, so every value below comes from those screenshots, not from the site's DOM or CSS.
+Source: full-page screenshots of https://www.conejovalleycounseling.com/home, captured by the site owner on 2026-09-28. When this spec was written the sandbox blocked the site, so every measurement below comes from those screenshots, not from the site's DOM or CSS.
+
+**Update (2026-09-28, later session):** the live page became reachable. Its HTML text confirms the section order, copy and navigation structure used here: About · Our Team ▾ · Specialties ▾ · Methods ▾ · FAQs · Contact, and a mobile menu built from "Folder: … / Back" sub-lists. A headless-Chrome capture at 1440 and 390 matched the layouts measured below.
 
 Colours are the exception. They come from the site's own `site.css` variables (read via a text fetch) and were confirmed by sampling screenshot pixels.
 

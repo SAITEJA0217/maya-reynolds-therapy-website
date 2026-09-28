@@ -22,22 +22,60 @@ export function SpecialtiesSection({ content }: { content: SpecialtiesContent })
         </h2>
       </div>
 
-      <div className="mt-20 px-[6vw] md:mt-[13.9vw] md:grid md:grid-cols-[30.2vw_25.7vw_4.6vw_25.7vw] md:px-[8.8vw]">
-        <h3 id={`${content.id}-heading`} className="text-[calc(var(--fs-h2)*0.84)] leading-[1.25] md:max-w-[22vw]">
-          <RichText text={content.heading} />
-        </h3>
-        <div className="mt-12 grid gap-16 md:col-span-3 md:col-start-2 md:mt-8 md:grid-cols-[25.7vw_25.7vw] md:gap-x-[4.6vw] md:gap-y-[8.6vw]">
-          {content.items.map((item) => (
-            <article key={item.id} id={item.id} aria-labelledby={`${item.id}-title`} className="reveal scroll-mt-6">
-              <h4 id={`${item.id}-title`} className="h3">
-                {item.title}
-              </h4>
-              <p className="mt-6 md:mt-7">{item.body}</p>
-              <TextLink link={item.link} className="mt-8" />
-            </article>
-          ))}
+      {content.items.length === 3 ? (
+        <ThreeUp content={content} />
+      ) : (
+        <div className="mt-20 px-[6vw] md:mt-[13.9vw] md:grid md:grid-cols-[30.2vw_25.7vw_4.6vw_25.7vw] md:px-[8.8vw]">
+          <h3 id={`${content.id}-heading`} className="text-[calc(var(--fs-h2)*0.84)] leading-[1.25] md:max-w-[22vw]">
+            <RichText text={content.heading} />
+          </h3>
+          <div className="mt-12 grid gap-16 md:col-span-3 md:col-start-2 md:mt-8 md:grid-cols-[25.7vw_25.7vw] md:gap-x-[4.6vw] md:gap-y-[8.6vw]">
+            {content.items.map((item) => (
+              <article key={item.id} id={item.id} aria-labelledby={`${item.id}-title`} className="reveal scroll-mt-6">
+                <h4 id={`${item.id}-title`} className="h3">
+                  {item.title}
+                </h4>
+                <p className="mt-6 md:mt-7">{item.body}</p>
+                <TextLink link={item.link} context={item.title} className="mt-8" />
+              </article>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
+  );
+}
+
+/**
+ * Three services (Maya): the reference's 2×2 grid would leave an orphan, so the
+ * heading sits above three numbered, ruled columns (stacked rows below 1024px).
+ */
+function ThreeUp({ content }: { content: SpecialtiesContent }) {
+  return (
+    <div className="mt-20 px-[6vw] md:mt-[11vw] md:px-[8.8vw]">
+      <h3 id={`${content.id}-heading`} className="text-[calc(var(--fs-h2)*0.84)] leading-[1.25]">
+        <RichText text={content.heading} />
+      </h3>
+      <ol className="mt-10 grid md:mt-14 lg:grid-cols-3 lg:gap-x-[3.5vw]">
+        {content.items.map((item, i) => (
+          <li
+            key={item.id}
+            id={item.id}
+            className="reveal scroll-mt-6 border-t border-line py-9 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-x-10 md:py-11 lg:flex lg:flex-col lg:pb-0"
+          >
+            <div>
+              <span aria-hidden="true" className="font-display text-[1.05rem] italic text-accent">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h4 className="h3 mt-3">{item.title}</h4>
+            </div>
+            <div className="lg:flex lg:flex-1 lg:flex-col">
+              <p className="mt-5 md:mt-0 lg:mt-6">{item.body}</p>
+              <TextLink link={item.link} context={item.title} className="mt-7 self-start lg:mt-auto lg:pt-8" />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }

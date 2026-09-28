@@ -1,4 +1,5 @@
 import { faq, mayaContent, practice, seo } from "@/data/site";
+import { absoluteUrl } from "@/lib/siteUrl";
 
 /** schema.org data built strictly from profile facts (no phone, hours, or pricing). */
 export function StructuredData() {
@@ -7,9 +8,11 @@ export function StructuredData() {
     "@graph": [
       {
         "@type": "Psychologist",
+        "@id": absoluteUrl("/#practice"),
         name: practice.name,
+        url: absoluteUrl("/"),
         description: seo.description,
-        image: "/images/maya-reynolds-portrait.jpg",
+        image: absoluteUrl("/images/maya-reynolds-portrait.jpg"),
         address: {
           "@type": "PostalAddress",
           streetAddress: practice.address.street,

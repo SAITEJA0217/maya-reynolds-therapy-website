@@ -21,6 +21,7 @@ export interface Photo {
   alt: string;
   /** CSS object-position, e.g. "30% center" */
   position?: string;
+  caption?: string;
 }
 
 export interface Brand {
@@ -36,6 +37,8 @@ export interface HeroContent {
   heading: RichText;
   body: string;
   cta: Link;
+  /** Maya only: quieter second route (the reference has a single CTA). */
+  secondaryCta?: Link;
   image: Photo;
   sideImage: Photo;
 }
@@ -154,7 +157,10 @@ export interface OfficeContent {
   eyebrow: string;
   heading: RichText;
   body: string[];
-  images: Photo[];
+  /** Set as an editorial pull quote beside the images. */
+  quote?: string;
+  /** [dominant, supporting] */
+  images: [Photo, Photo];
   details: OfficeDetail[];
 }
 

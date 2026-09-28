@@ -22,7 +22,7 @@ export function SiteFooter({ brand, footer }: SiteFooterProps) {
         </div>
         {footer.columns.map((column) => (
           <div key={column.title} className="md:pr-6">
-            <h2 className="eyebrow font-body">{column.title}</h2>
+            <h2 className="eyebrow font-body before:hidden">{column.title}</h2>
             {column.links && (
               <ul className="mt-4 space-y-0.5 text-[0.9375rem]">
                 {column.links.map((link) => (

@@ -12,15 +12,14 @@ import type { FaqContent, OfficeContent, SiteContent } from "./types";
 
 import portrait from "@/public/images/maya-reynolds-portrait.jpg";
 import heroWindow from "@/public/images/hero-window-light.jpg";
-import oliveTree from "@/public/images/detail-olive-tree.jpg";
+import brickLight from "@/public/images/hero-brick-light.jpg";
 import introBookshelf from "@/public/images/intro-bookshelf.jpg";
-import whoArmchair from "@/public/images/who-armchair.jpg";
+import whoOlive from "@/public/images/who-olive-curtains.jpg";
 import whoSofaArt from "@/public/images/who-sofa-art.jpg";
 import whoBeachPrint from "@/public/images/who-beach-print.jpg";
-import specialtiesRoom from "@/public/images/specialties-room.jpg";
+import windowLight from "@/public/images/specialties-window-light.jpg";
 import officeLounge from "@/public/images/office-lounge.jpg";
 import officeSession from "@/public/images/office-session-room.jpg";
-import curtainLight from "@/public/images/detail-curtain-light.jpg";
 
 export const practice = {
   name: "Dr. Maya Reynolds, PsyD",
@@ -116,12 +115,13 @@ export const mayaContent: SiteContent = {
     heading: "Slow down, reconnect with yourself, and finally feel *steady*.",
     body: "Therapy for adults navigating anxiety, panic, trauma, and burnout, with practical tools and room for depth.",
     cta: { label: "Request an appointment", href: "#contact" },
+    secondaryCta: { label: "Meet Dr. Reynolds", href: "#about" },
     image: {
       src: heroWindow,
       alt: "Sunlight through tall sheer-curtained windows onto an armchair in Dr. Reynolds’ Santa Monica office",
       position: "40% center",
     },
-    sideImage: { src: oliveTree, alt: "An olive tree beside linen curtains in the therapy room" },
+    sideImage: { src: brickLight, alt: "Afternoon light on the exposed brick between the office windows", position: "center top" },
   },
 
   intro: {
@@ -147,7 +147,7 @@ export const mayaContent: SiteContent = {
       {
         title: "High-Achievers",
         body: "You’re capable and self-aware, yet stuck in overthinking, emotionally on edge, or exhausted from holding everything together.",
-        image: { src: whoArmchair, alt: "A soft armchair with a knit throw in afternoon light" },
+        image: { src: whoOlive, alt: "An olive tree between sheer white curtains in the therapy room" },
       },
       {
         title: "Adults Carrying the Past",
@@ -187,7 +187,7 @@ export const mayaContent: SiteContent = {
 
   approach: {
     id: "about",
-    eyebrow: "How I work",
+    eyebrow: "About Dr. Reynolds",
     heading: "Warm, collaborative, and *grounded*.",
     lead: "I believe therapy works best when you feel respected, understood, and actively involved in the process.",
     body: [
@@ -215,8 +215,8 @@ export const mayaContent: SiteContent = {
     id: "specialties",
     statement: "Understanding where you’ve been *&* how you want to live now.",
     image: {
-      src: specialtiesRoom,
-      alt: "The therapy room: linen curtains, an olive tree, and a soft grey sofa beneath a framed shoreline print",
+      src: windowLight,
+      alt: "Tall windows with sheer grey curtains between exposed brick columns, lit by afternoon sun",
     },
     heading: "My *specialties* include…",
     items: services,
@@ -271,21 +271,18 @@ export const office: OfficeContent = {
   heading: "A quiet, *light-filled* room in Santa Monica.",
   body: [
     "My office is a quiet, private space designed to feel calm and grounding, with natural light and a comfortable, uncluttered environment.",
-    "Clients often share that the space itself helps them feel more at ease when they arrive.",
   ],
+  quote: "Clients often share that the space itself helps them feel more at ease when they arrive.",
   images: [
     {
-      src: officeLounge,
-      alt: "Dr. Reynolds’ office: a grey sofa, marble coffee table, and swivel armchair beneath tall windows with sheer curtains and exposed brick",
-    },
-    {
       src: officeSession,
-      alt: "The therapy room: a soft grey sofa and leather armchair around a round glass table, with an olive tree and a bookshelf",
+      alt: "The therapy room: a soft grey sofa and leather armchair around a round glass table, with an olive tree, sheer curtains and a bookshelf",
+      caption: "The therapy room",
     },
     {
-      src: curtainLight,
-      alt: "Afternoon light through sheer curtains against the office’s exposed brick wall",
-      position: "center 35%",
+      src: officeLounge,
+      alt: "A second view of the office: a grey sofa, marble coffee table and swivel armchair beneath tall windows, sheer curtains and exposed brick",
+      caption: "Natural light through tall windows",
     },
   ],
   details: [

@@ -18,6 +18,8 @@
   --color-bar: var(--c-bar); /* footer bottom bar */
   --color-on-bar: var(--c-on-bar);
   --color-field: var(--c-field); /* form inputs */
+  --color-error: var(--c-error); /* form validation */
+  --color-field-line: var(--c-field-line); /* form control borders (≥3:1) */
 
   --font-display: var(--f-display);
   --font-body: var(--f-body);
@@ -45,6 +47,8 @@
   --c-bar: #33402f; /* olive */
   --c-on-bar: #f5f1ea;
   --c-field: #fbf9f5;
+  --c-error: #a3261b; /* 7.0:1 on field */
+  --c-field-line: #857b70; /* 3.7:1 on linen, 3.9:1 on field */
 
   --f-display: var(--font-fraunces), Georgia, serif;
   --f-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
@@ -57,6 +61,18 @@
   --display-weight: 300;
   --display-tracking: -0.015em;
   --body-weight: 400;
+
+  /* Maya's button: solid olive, softly squared (the reference uses an outlined ellipse) */
+  --btn-radius: 3px;
+  --btn-weight: 500;
+  --btn-bg: var(--c-bar);
+  --btn-fg: var(--c-on-bar);
+  --btn-border: var(--c-bar);
+  --btn-hover-bg: var(--c-band);
+  --btn-hover-fg: var(--c-on-bar);
+
+  /* Short clay rule before eyebrows: a Maya-only motif */
+  --eyebrow-rule: 1.75rem;
 }
 
 /* ---------- Reference clone (Conejo Valley Family Counseling) ----------
@@ -75,6 +91,8 @@
   --c-bar: #86b3b3;
   --c-on-bar: #ffffff;
   --c-field: #ffffff;
+  --c-error: #b3261e;
+  --c-field-line: #8a8a86;
 
   --f-display: var(--font-newsreader), Georgia, serif;
   --f-body: var(--font-mulish), ui-sans-serif, system-ui, sans-serif;
@@ -86,4 +104,14 @@
   --display-weight: 300;
   --display-tracking: -0.01em;
   --body-weight: 300;
+
+  --btn-radius: 50%;
+  --btn-weight: 400;
+  --btn-bg: transparent;
+  --btn-fg: var(--c-ink);
+  --btn-border: var(--c-ink);
+  --btn-hover-bg: var(--c-ink);
+  --btn-hover-fg: var(--c-canvas);
+
+  --eyebrow-rule: 0;
 }

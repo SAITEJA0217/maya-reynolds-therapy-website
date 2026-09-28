@@ -7,7 +7,7 @@ export function Wordmark({ brand }: { brand: Brand }) {
       <span className="font-display text-[1.75rem] font-display-weight tracking-[-0.01em] text-ink md:text-[2.4rem]">
         {brand.name}
       </span>
-      <span className="mt-1.5 font-body text-[0.62rem] tracking-[0.36em] text-accent uppercase md:text-[0.78rem]">
+      <span className="mt-1.5 font-body text-[0.6875rem] tracking-[0.28em] text-accent uppercase md:text-[0.78rem] md:tracking-[0.36em]">
         {brand.tagline}
       </span>
     </span>
